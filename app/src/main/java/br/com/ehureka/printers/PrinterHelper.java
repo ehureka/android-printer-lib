@@ -63,6 +63,10 @@ public class PrinterHelper {
 
     private void initialize(PrinterEnum printerEnum) {
         switch (printerEnum) {
+            case TM_T20:
+                this.mPrinter = new TMT20Printer(this, this.mListener);
+                break;
+
             case CMP_10BT:
             default:
                 this.mPrinter = new CMP10BTPrinter(this, this.mListener);

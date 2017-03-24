@@ -8,17 +8,13 @@ import java.io.OutputStream;
 import br.com.ehureka.printers.interfaces.IPrinter;
 import br.com.ehureka.printers.interfaces.OnPrinterListener;
 
-class CMP10BTPrinter implements IPrinter {
+class CMP10BTPrinter extends AbstractPrinter {
 
     private byte mode;
     private static final byte[] UNIQUE_BYTE = new byte[1];
 
-    private final PrinterHelper mBTHelper;
-    private final OnPrinterListener mListener;
-
     CMP10BTPrinter(PrinterHelper helper, OnPrinterListener listener) {
-        this.mBTHelper = helper;
-        this.mListener = listener;
+        super(helper, listener);
     }
 
     @Override
