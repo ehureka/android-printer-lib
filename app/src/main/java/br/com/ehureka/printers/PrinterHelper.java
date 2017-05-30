@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -33,6 +34,7 @@ public class PrinterHelper {
     private BluetoothDevice mDevice;
     private BluetoothSocket mBTSocket;
 
+    private Timer mTimer;
     private List<BluetoothDevice> mDevices;
 
     public static PrinterHelper getInstance() {
@@ -62,6 +64,14 @@ public class PrinterHelper {
     }
 
     private void initialize(PrinterEnum printerEnum) {
+        this.mTimer = new Timer();
+        this.mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                checkPrinter();
+            }
+        }, 120000, 120000);
+
         switch (printerEnum) {
             case TM_T20:
                 this.mPrinter = new TMT20Printer(this, this.mListener);
@@ -71,6 +81,14 @@ public class PrinterHelper {
             default:
                 this.mPrinter = new CMP10BTPrinter(this, this.mListener);
                 break;
+        }
+    }
+
+    private void checkPrinter() {
+        if (!this.mPrinter.isPrinting()) {
+            this.mTimer.cancel();
+            this.mTimer = null;
+            disconnect();
         }
     }
 
@@ -86,6 +104,10 @@ public class PrinterHelper {
             } else {
                 this.mDevice = tmp;
             }
+        }
+
+        if (isConnected()) {
+            disconnect();
         }
 
         try {

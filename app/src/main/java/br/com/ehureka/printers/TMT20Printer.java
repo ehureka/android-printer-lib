@@ -83,4 +83,14 @@ class TMT20Printer extends AbstractPrinter {
 
     }
 
+    @Override
+    public void setPrinting(boolean value) {
+
+    }
+
+    @Override
+    public boolean isPrinting() {
+        return false;
+    }
+
 }

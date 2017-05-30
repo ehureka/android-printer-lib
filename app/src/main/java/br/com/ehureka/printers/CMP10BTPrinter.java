@@ -5,13 +5,14 @@ import android.bluetooth.BluetoothSocket;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import br.com.ehureka.printers.interfaces.IPrinter;
 import br.com.ehureka.printers.interfaces.OnPrinterListener;
 
 class CMP10BTPrinter extends AbstractPrinter {
 
-    private byte mode;
     private static final byte[] UNIQUE_BYTE = new byte[1];
+
+    private byte mode;
+    private boolean mPrinting;
 
     CMP10BTPrinter(PrinterHelper helper, OnPrinterListener listener) {
         super(helper, listener);
@@ -182,6 +183,16 @@ class CMP10BTPrinter extends AbstractPrinter {
 
         // Imprime e vai pra linha seguinte
         println();
+    }
+
+    @Override
+    public void setPrinting(boolean value) {
+        this.mPrinting = value;
+    }
+
+    @Override
+    public boolean isPrinting() {
+        return this.mPrinting;
     }
 
     private byte[] translate(String text) {
